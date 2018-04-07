@@ -8,6 +8,19 @@ import UIKit
 
 open class SideMenuManager : NSObject {
     
+    
+    static let shared: SideMenuManager = {
+        let instance = SideMenuManager()
+        
+        // setup code
+        
+        return instance
+    }()
+    
+    
+    
+    var viewController:UIViewController?
+    
     @objc public enum MenuPushStyle : Int {
         case defaultBehavior,
         popWhenPossible,
@@ -358,4 +371,53 @@ open class SideMenuManager : NSObject {
         
         return panGestureRecognizer
     }
+    
+   func setPanGesture()
+    {
+        let rightPan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgerightPan))
+        rightPan.edges = .right
+        viewController?.view.addGestureRecognizer(rightPan)
+        let leftPan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeleftPan))
+        leftPan.edges = .left
+        viewController?.view.addGestureRecognizer(leftPan)
+        
+    }
+    @objc func screenEdgerightPan(_ recognizer: UIScreenEdgePanGestureRecognizer) {
+        if recognizer.state == .recognized
+        {
+            self.openRightSideBar()
+        }
+    }
+    @objc func screenEdgeleftPan(_ recognizer: UIScreenEdgePanGestureRecognizer) {
+        if recognizer.state == .recognized
+        {
+            self.openLeftSideBar()
+        }
+    }
+    func openRightSideBar()
+    {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "RSlideMenu") as! RSlideMenu
+        let nav = UISideMenuNavigationController(rootViewController: vc)
+        
+        viewController?.present(nav, animated: true, completion: nil)
+    }
+    func openLeftSideBar() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "SlideMenu") as! SlideMenu
+        let nav = UISideMenuNavigationController(rootViewController: vc)
+        nav.leftSide = true
+        viewController?.present(nav, animated: true, completion: nil)
+    }
+    func pushViewController(viewController:UIViewController)
+    {
+    
+        
+            self.viewController?.dismiss(animated: true, completion: nil)
+            self.viewController?.navigationController?.pushViewController(viewController, animated: true)
+       
+      
+    }
+    
+    
 }

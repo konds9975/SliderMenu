@@ -23,7 +23,7 @@ class SlideMenu: UIViewController {
         SideMenuManager.menuAddPanGestureToPresent(toView: self.navigationController!.navigationBar)
         SideMenuManager.menuAddScreenEdgePanGesturesToPresent(toView: self.navigationController!.view)
         
-        SideMenuManager.menuWidth = 238
+        SideMenuManager.menuWidth = 275
         SideMenuManager.menuFadeStatusBar = false
         SideMenuManager.menuPresentMode = .menuSlideIn
         
